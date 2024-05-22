@@ -8,8 +8,12 @@ dotenv.config({ path: ['.env.local', '.env'] });
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const weixinbotUrl = process.env.WEIXIN_BOT_URL;
+let count = 0;
 export async function sendImg() {
 	const imgPath = resolve(__dirname, '../img');
+	if (fs.readdirSync(imgPath).length === 0) {
+		count = 0;
+	}
 	for (const item of fs.readdirSync(imgPath)) {
 		const filePath = resolve(imgPath, item);
 		let imageBuffer;
@@ -30,9 +34,19 @@ export async function sendImg() {
 			body: JSON.stringify(data)
 		});
 		const res = await request.json();
+		console.log(res.errcode);
 		if (res.errcode === 0) {
 			fs.unlinkSync(filePath);
 			console.log(filePath, '发送成功');
+			console.log('==========================');
+			count++;
+		}
+		if (count === 20) {
+			count = 0;
+			setTimeout(() => {
+				sendImg();
+			}, 1000 * 65);
+			break;
 		}
 	}
 }
