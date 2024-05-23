@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const weixinbotUrl = process.env.WEIXIN_BOT_URL;
 let count = 0;
 export async function sendImg() {
-	const imgPath = resolve(__dirname, '../img');
+	const imgPath = resolve(__dirname, '../../../img');
 	if (fs.readdirSync(imgPath).length === 0) {
 		count = 0;
 	}

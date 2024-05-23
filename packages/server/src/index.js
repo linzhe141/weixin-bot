@@ -14,7 +14,7 @@ app.use(fileUpload());
 
 app.post('/upload', async function (req, res) {
 	try {
-		const uploadDir = resolve(__dirname, '../img');
+		const uploadDir = resolve(__dirname, '../../../img');
 		if (!fs.existsSync(uploadDir)) {
 			fs.mkdirSync(uploadDir);
 		}
@@ -26,7 +26,7 @@ app.post('/upload', async function (req, res) {
 			const file = files[i];
 			const targetPath = resolve(
 				__dirname,
-				`../img/${Date.now()}-index${i}-${file.name}`
+				`../../../img/${Date.now()}-index${i}-${file.name}`
 			);
 			await file.mv(targetPath);
 		}

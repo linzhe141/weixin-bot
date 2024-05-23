@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    container_name: app
+    build: ./packages/app # 根据指定目录下的Dockerfile构建镜像
+    # build: #进一步扩展
+    #   context: ./webapp
+    #   dockerfile: Dockerfile
+    #   image: myimage:tag
+
+    #! links: # links指令已被弃用
+    #!   - webserver # 允许一个容器能够访问另一个容器，并在它们之间建立网络连接
+
+    # 来指定服务webapp依赖于webserver服务。这样在启动时，
+    # Docker Compose会确保先启动webserver服务，然后再启动webapp服务
+    depends_on:
+      - server
+    ports:
+      - '4534:4534'
+  server:
+    container_name: server
+    build: ./packages/server # 根据指定目录下的Dockerfile构建镜像
+    expose:
+      - '8912:8912' # 暴露容器给依赖当前容器的容器使用
+    volumes:
+      - /img:/app/img
+    environment:
+      - WEIXIN_BOT_URL=${WEIXIN_BOT_URL}

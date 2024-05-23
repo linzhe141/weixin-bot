@@ -1,0 +1,18 @@
+{
+	"name": "server",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "node src/index.js"
+	},
+	"devDependencies": {
+		"dotenv-cli": "^7.4.2",
+		"express": "^4.19.2",
+		"express-fileupload": "^1.5.0",
+		"fs-extra": "^11.2.0",
+		"heic-convert": "^2.1.0",
+		"sharp": "^0.33.4",
+		"unzipper": "^0.11.6"
+	}
+}
