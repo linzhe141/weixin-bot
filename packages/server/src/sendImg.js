@@ -3,14 +3,12 @@ import crypto from 'crypto';
 import { resolve, dirname } from 'path';
 import sharp from 'sharp';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
-dotenv.config({ path: ['.env.local', '.env'] });
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const weixinbotUrl = process.env.WEIXIN_BOT_URL;
 let count = 0;
 export async function sendImg() {
-	const imgPath = resolve(__dirname, '../../../img');
+	const imgPath = resolve(__dirname, '../img');
 	if (fs.readdirSync(imgPath).length === 0) {
 		count = 0;
 	}
@@ -43,10 +41,8 @@ export async function sendImg() {
 		}
 		if (count === 20) {
 			count = 0;
-			setTimeout(() => {
-				sendImg();
-			}, 1000 * 65);
-			break;
+			await delay(1000 * 65); // 使用 delay 函数代替 setTimeout
+			await sendImg();
 		}
 	}
 }
@@ -82,4 +78,8 @@ function checkImg(filePath) {
 				console.error('Error during compression:', err);
 			});
 	}
+}
+
+function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }

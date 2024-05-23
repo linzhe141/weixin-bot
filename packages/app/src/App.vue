@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 const disabled = ref(false);
 const inputRef = ref(null);
+const formRef = ref(null);
 async function changeHandle() {
 	disabled.value = true;
 	const files = inputRef.value.files;
@@ -14,11 +15,13 @@ async function changeHandle() {
 		body: data
 	});
 	disabled.value = false;
+	formRef.value.reset();
 }
 </script>
 
 <template>
-	<div
+	<form
+		ref="formRef"
 		style="
 			display: flex;
 			justify-content: center;
@@ -64,7 +67,7 @@ async function changeHandle() {
 				cursor: not-allowed;
 			"
 		></div>
-	</div>
+	</form>
 	<div
 		v-if="disabled"
 		style="

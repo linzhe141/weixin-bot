@@ -23,6 +23,6 @@ services:
     expose:
       - '8912:8912' # 暴露容器给依赖当前容器的容器使用
     volumes:
-      - /img:/app/img
+      - ./img:/app/img
     environment:
       - WEIXIN_BOT_URL=${WEIXIN_BOT_URL}

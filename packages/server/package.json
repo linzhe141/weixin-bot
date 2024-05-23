@@ -7,7 +7,6 @@
 		"dev": "node src/index.js"
 	},
 	"devDependencies": {
-		"dotenv-cli": "^7.4.2",
 		"express": "^4.19.2",
 		"express-fileupload": "^1.5.0",
 		"fs-extra": "^11.2.0",
