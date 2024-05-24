@@ -3,6 +3,7 @@ import { ref } from 'vue';
 const disabled = ref(false);
 const inputRef = ref(null);
 const formRef = ref(null);
+const success = ref(false);
 async function changeHandle() {
 	disabled.value = true;
 	const files = inputRef.value.files;
@@ -10,12 +11,16 @@ async function changeHandle() {
 	for (const item of files) {
 		data.append('file', item);
 	}
-	await fetch('/api/upload', {
+	const res = await fetch('/api/upload', {
 		method: 'POST',
 		body: data
 	});
+	success.value = (await res.json()).success;
 	disabled.value = false;
 	formRef.value.reset();
+	setTimeout(() => {
+		success.value = false;
+	}, 3000);
 }
 </script>
 
@@ -31,7 +36,7 @@ async function changeHandle() {
 	>
 		<label>
 			<div class="btn" style="display: flex; align-items: center">
-				选择图片
+				选择图片或图片压缩包
 				<div
 					v-if="disabled"
 					style="
@@ -53,6 +58,7 @@ async function changeHandle() {
 				type="file"
 				ref="inputRef"
 				multiple
+				accept=".zip,.png,.heic,.jpg,.jpeg"
 				@change="changeHandle"
 			/>
 		</label>
@@ -78,6 +84,17 @@ async function changeHandle() {
 		"
 	>
 		请耐心等待，此过程比较慢。。。
+	</div>
+	<div
+		v-if="success"
+		style="
+			color: #fff;
+			display: flex;
+			justify-content: center;
+			margin-top: 50px;
+		"
+	>
+		所有图片发送成功🎉
 	</div>
 </template>
 

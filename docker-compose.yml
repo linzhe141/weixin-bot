@@ -17,6 +17,7 @@ services:
       - server
     ports:
       - '4534:4534'
+    restart: always
   server:
     container_name: server
     build: ./packages/server # 根据指定目录下的Dockerfile构建镜像
@@ -26,3 +27,4 @@ services:
       - ./img:/app/img
     environment:
       - WEIXIN_BOT_URL=${WEIXIN_BOT_URL}
+    restart: always
