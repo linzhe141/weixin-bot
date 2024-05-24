@@ -18,7 +18,7 @@
 - 2、通过在项目根目录新建 `.env` 文件配置企业微信机器人的 Webhook URL。
 
   ```
-  WEIXIN_BOT_URL=企业微信机器人url;
+  WEIXIN_BOT_URL=企业微信机器人url
   ```
 
 - 3、在项目根目录执行`docker-compose build`，构建镜像。
