@@ -55,7 +55,7 @@ async function checkImg(filePath) {
 
 	// 设定压缩参数
 	const targetSizeInMB = 2;
-	let quality = 99; // 初始质量
+	let quality = 80; // 初始质量
 
 	// 检查是否需要压缩
 	if (fileSizeInMB > targetSizeInMB) {
@@ -67,7 +67,7 @@ async function checkImg(filePath) {
 		let compressedSizeInMB = data.length / (1024 * 1024);
 		// 逐步降低质量直到达到目标大小
 		while (compressedSizeInMB > targetSizeInMB) {
-			quality -= 1;
+			quality -= 5;
 			data = await sharp(data).jpeg({ quality }).toBuffer();
 			compressedSizeInMB = data.length / (1024 * 1024);
 		}
