@@ -32,7 +32,7 @@ export async function sendImg() {
 			body: JSON.stringify(data)
 		});
 		const res = await request.json();
-		console.log(res.errcode);
+		console.log('errcode：', res.errcode);
 		if (res.errcode === 0) {
 			fs.unlinkSync(filePath);
 			console.log(filePath, '发送成功');
@@ -47,7 +47,7 @@ export async function sendImg() {
 	}
 }
 
-function checkImg(filePath) {
+async function checkImg(filePath) {
 	// 获取图片大小
 	const stats = fs.statSync(filePath);
 	const fileSizeInBytes = stats.size;
@@ -60,23 +60,19 @@ function checkImg(filePath) {
 	// 检查是否需要压缩
 	if (fileSizeInMB > targetSizeInMB) {
 		// 压缩图片
-		return sharp(filePath)
+		sharp.cache(false);
+		let data = await sharp(filePath)
 			.jpeg({ quality }) // 初始压缩质量
-			.toBuffer()
-			.then((data) => {
-				const compressedSizeInMB = data.length / (1024 * 1024);
-				// 逐步降低质量直到达到目标大小
-				while (compressedSizeInMB > targetSizeInMB && quality > 10) {
-					quality -= 5;
-					data = sharp(data).jpeg({ quality }).toBuffer();
-					compressedSizeInMB = data.length / (1024 * 1024);
-				}
-				console.log(filePath, '压缩成功');
-				return data;
-			})
-			.catch((err) => {
-				console.error('Error during compression:', err);
-			});
+			.toBuffer();
+		let compressedSizeInMB = data.length / (1024 * 1024);
+		// 逐步降低质量直到达到目标大小
+		while (compressedSizeInMB > targetSizeInMB) {
+			quality -= 5;
+			data = await sharp(data).jpeg({ quality }).toBuffer();
+			compressedSizeInMB = data.length / (1024 * 1024);
+		}
+		console.log(filePath, '压缩成功', compressedSizeInMB + 'MB');
+		return data;
 	}
 }
 

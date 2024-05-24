@@ -80,6 +80,7 @@ app.post('/upload', async function (req, res) {
 		await sendImg();
 		res.json({ success: true });
 	} catch (error) {
+		console.log('发生错误：', error);
 		res.json({ success: false, msg: error });
 	}
 });
